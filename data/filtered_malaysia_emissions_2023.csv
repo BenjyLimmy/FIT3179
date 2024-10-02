@@ -1,0 +1,8 @@
+Entity,Continent,Year,Population,Latitude,Longitude,Emissions_Type,Emissions_Value
+Malaysia,Asia,2023,32804020,4.210484,101.975766,NOx (Nitrogen Oxides),896638.0399
+Malaysia,Asia,2023,32804020,4.210484,101.975766,SO2 (Sulfur Dioxide),377090.0348
+Malaysia,Asia,2023,32804020,4.210484,101.975766,CO (Carbon Monoxide),3839309.871
+Malaysia,Asia,2023,32804020,4.210484,101.975766,OC (Organic Carbon),41831.39922
+Malaysia,Asia,2023,32804020,4.210484,101.975766,NMVOC (Non-Methane Volatile Organic Compounds),1555014.583
+Malaysia,Asia,2023,32804020,4.210484,101.975766,BC (Black Carbon),33978.92555
+Malaysia,Asia,2023,32804020,4.210484,101.975766,NH3 (Ammonia),284254.0071

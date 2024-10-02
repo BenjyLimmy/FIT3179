@@ -1,0 +1,31 @@
+Continent,Emission Source,Total Emissions
+Africa,Biomass,1809926958.6836436
+Africa,Diesel Oil,105002493.08429103
+Africa,Hard Coal,141265960.6652699
+Africa,Light Oil,345027456.2522155
+Africa,Process,1019580953.7787378
+Asia,Biomass,5064439916.914466
+Asia,Diesel Oil,999075445.5523349
+Asia,Hard Coal,3340710951.139006
+Asia,Light Oil,2381989801.947296
+Asia,Process,3703509313.790373
+Europe,Biomass,338820443.37510663
+Europe,Diesel Oil,353634759.8449436
+Europe,Hard Coal,356475257.90577143
+Europe,Light Oil,911747111.9538069
+Europe,Process,904827537.5972457
+North America,Biomass,313381398.5790003
+North America,Diesel Oil,425832989.6983069
+North America,Hard Coal,391675852.92284083
+North America,Light Oil,2581354369.786341
+North America,Process,869688674.6088593
+Oceania,Biomass,23680393.356600825
+Oceania,Diesel Oil,31206331.79855079
+Oceania,Hard Coal,19031274.117931362
+Oceania,Light Oil,104035322.29554433
+Oceania,Process,86162004.92075384
+South America,Biomass,234533890.5901247
+South America,Diesel Oil,162126462.31030118
+South America,Hard Coal,26837877.456266038
+South America,Light Oil,662981983.6121016
+South America,Process,528307391.732757
