@@ -1,24 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
-     <!-- Style from file -->
-    <link rel="stylesheet" href="css/styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global Air Pollution Visualization</title>
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
-    <script src="js/deaths_map.js"></script>
-    <script src="js/bubble_chart.js"></script>
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="#row1">Global Overview</a></li>
+        <li class="nav-separator"></li>
+        <li><a href="#row2">Economic Factors</a></li>
+        <li class="nav-separator"></li>
+        <li><a href="#row3">Emissions Breakdown</a></li>
+        <li class="nav-separator" style="width: 2.5px"></li>
+        <li><a href="#row4">Trends & Future Projections</a></li>
+      </ul>
+    </nav>
 
-</head>
-<body>
-    <div id="deaths_map"></div>
-    <div id="bubble_chart"></div>
-    
-    
-    
-</body>
+    <div class="container">
+      <div id = "title-box">
+        <h1>Global Fuel Emissions and Air Pollution</h1>
+      <h2>A Deep Dive into Trends and Malaysia's Impact</h2>
+      </div>
+      
+      <div id="row1" style="height: 30px"></div>
+      <div class="subheading-container">
+        <h3>Global Overview</h3>
+        <div class="hr"></div>
+      </div>
+      <div class="row">
+        <div class="chart-container">
+          <div id="deaths_map" class="chart"></div>
+          <div>
+            <h4>Global Air Pollution Deaths Over Time</h4>
+            <p class="description">
+              This map highlights global air pollution deaths per 100,000
+              people. In 2023,
+              <strong style="font-size: 1.3em; color: #c00505d0"
+                >African</strong
+              >
+              countries show significantly higher death rates, while
+              <strong style="font-size: 1.2em; color: #c00505d0">Asia</strong>
+              sees moderate figures, and
+              <strong style="font-size: 1.1em; color: #c00505d0"
+                >North America</strong
+              >
+              experiences lower numbers. Historically, these numbers increased
+              before a global decline leading to 2023. The drop in pollution
+              deaths can be linked to global policies aimed at improving air
+              quality and reducing industrial emissions.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="chart-container">
+          <div id="emissions_map" class="chart"></div>
+          <div>
+            <h4>Global Fuel Emissions per Capita</h4>
+            <p class="description">
+              Countries with large oil reserves and extraction industries, such
+              as <strong style="color: #a4603c">Libya</strong>,
+              <strong style="color: #a4603c">Kazakhstan</strong>, and
+              <strong style="color: #a4603c">Canada</strong>, see above-average
+              fuel emissions. Certain countries like
+              <strong style="color: #a4603c">Libya</strong> exhibit high
+              emissions due to fossil fuel reliance for energy generation.
+              Notably, <strong style="color: #a4603c">India</strong> has one of
+              the lowest emissions per capita, largely due to its lower
+              industrial output relative to its large population and significant
+              use of renewable energy sources.
+              <strong style="color: #a4603c">Saudi Arabia</strong> continues to
+              see high levels of sulphur dioxide (SO<sub>2</sub>) and nitrogen
+              oxides (NOx) emissions due to its large-scale oil industry.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="row2" style="height: 30px"></div>
+      <div class="subheading-container">
+        <h3>Economic Factors</h3>
+        <div class="hr"></div>
+      </div>
+
+      <div class="row">
+        <div class="chart-container">
+          <div id="bubble_chart" class="chart"></div>
+          <div>
+            <h4>Economic Power vs Environmental Impact</h4>
+            <p class="description">
+              Explore the balance between wealth and environmental impact.
+              <strong style="color: #f85904">Singapore</strong> and
+              <strong style="color: #f85904">Switzerland</strong> boast some of
+              the highest GDPs with moderate fuel emissions, despite their small
+              populations. On the other hand,
+              <strong style="color: #f85904">Venezuela</strong> exhibits a low
+              GDP but high fuel emissions.
+              <strong style="color: #f85904">Malaysia</strong> ranks above
+              average in fuel emissions, with a mid-range GDP. There is a
+              noticeable correlation between GDP and fuel emissions, though
+              exceptions like
+              <strong style="color: #f85904">Greenland</strong> and
+              <strong style="color: #f85904">Venezuela</strong>
+              reveal other influential factors such as economic instability and
+              energy dependence.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="row3" style="height: 30px"></div>
+      <div class="subheading-container">
+        <h3>Emissions Breakdown</h3>
+        <div class="hr"></div>
+      </div>
+
+      <div class="row">
+        <div class="dual-chart-container">
+          <div class="chart-container flex-column">
+            <h4>Fuel Source Emissions by Continent</h4>
+            <div id="alluvial_chart" class="chart"></div>
+            <em style="font-size: 0.8em; align-self: center"
+              >Click on the bars for more detail!</em
+            >
+            <p class="description">
+              <strong style="color: #33a02c">Asia</strong> accounts for more
+              than half of global fuel emissions, with biomass as a primary fuel
+              source. This underscores the region's energy demand and the
+              limited penetration of renewable alternatives in rural and
+              industrial sectors. In
+              <strong style="color: #1f78b4">North America</strong>, light oil
+              dominates the emissions breakdown, reflecting its highly developed
+              transportation infrastructure and extensive use of personal
+              vehicles.
+            </p>
+          </div>
+          <div class="chart-container flex-column">
+            <h4>Proportional Breakdown by Emission Type in Malaysia</h4>
+            <div id="waffle_chart" class="chart"></div>
+            <p class="description">
+              Zooming into Malaysia's emission types, it is observed that the
+              largest contributor to emissions in Malaysia is
+              <strong style="color: #0073e6">carbon monoxide</strong>, followed
+              by <strong style="color: #c44601">NMVOC</strong>. These emissions
+              result from <strong>transportation</strong> and
+              <strong>industrial activities</strong>, indicating the country's
+              dependency on fossil fuels. The high
+              <strong style="color: #0073e6">carbon monoxide</strong> levels
+              reflect Malaysia's reliance on gasoline for vehicles, while
+              <strong style="color: #c44601">NMVOC</strong> emissions come from
+              industrial solvents and manufacturing.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div id="row4" style="height: 30px"></div>
+      <div class="subheading-container">
+        <h3>Trends & Future Projections</h3>
+        <div class="hr"></div>
+      </div>
+
+      <div class="row">
+        <div class="chart-container single-chart-container">
+          <h4 style="align-self: center">
+            Shifting Gears: Global and Malaysia Fuel Emissions Trends
+            (2013-2023)
+          </h4>
+          <div id="waterfall_chart" class="chart">Time Trends Chart</div>
+          <div class="column-container">
+            <p class="description">
+              Both globally and in Malaysia, fuel emissions rose steadily until
+              the sharp drop in 2020, primarily due to the global slowdown in
+              transportation and industrial operations during the
+              <strong style="color: #a4603c; font-size: 1.1em">COVID-19</strong>
+              pandemic. With global fuel emissions continuing to decline,
+              forecasts suggest this trend could persist as more nations commit
+              to paving the way for a greener future.<br />The post-pandemic
+              recovery in Malaysia saw a sustained decrease in emissions, likely
+              reflecting structural changes, such as
+              <strong>adoption of electric vehicles </strong> and an
+              accelerating shift toward
+              <strong>cleaner, renewable energy sources</strong>, signaling a
+              long-term transformation in national energy consumption.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="chart-container">
+          <div id="stacked_area" class="chart"></div>
+          <div>
+            <h4>Malaysia's Fuel Emission Trends by Source</h4>
+            <p class="description">
+              Looking closer at Malaysia's total emissions,
+              <strong style="color: #e69f00; font-size: 1.3em"
+                >light oil</strong
+              >
+              is Malaysia's main emission source, followed by
+              <strong style="color: #0072b2; font-size: 1.2em"
+                >industrial processes</strong
+              >. Emissions peaked in 2017 due to a 35% rise in light oil use,
+              driven by industrial growth. The dip in 2015 coincides with global
+              oil price drops and reduced industrial output. We see that
+              Malaysia's emissions are strongly tied to economic shifts,
+              particularly in the <strong>oil market</strong> and
+              <strong>industrial expansion</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p class="p-footer">&copy; 2024 Benjamin Lim Chin Yeong</p>
+      <p class="p-footer">
+        Created for FIT3179 Assignment 2 at Monash University Malaysia
+      </p>
+      <p class="p-footer">Visualizations made with Vega-Lite</p>
+      <p class="p-footer">
+        Data sourced from:
+        <a
+          href="https://github.com/owid/owid-datasets/tree/master/datasets/Air%20pollution%20emissions%20by%20fuel%20(CEDS%2C%202022)"
+          >Global Fuel Emissions</a
+        >
+        &
+        <a
+          href="https://github.com/asnakhader/DVA-Energy/blob/main/death-rates-from-air-pollution.csv"
+          >Global Air Pollution Deaths</a
+        >
+      </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+    <script src="js/charts.js"></script>
+
+    <script>
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
