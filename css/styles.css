@@ -122,11 +122,6 @@ h4 {
     transition: all 0.3s ease;
 }
 
-.chart-container:hover {
-    transform: scale(1.01); /* Slightly enlarge the text on hover */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7); /* Increase shadow on hover */
-}
-
 .chart {
     width: 100%;
     min-height: 300px;
