@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Global Air Pollution Visualization</title>
+    <link rel="shortcut icon" type="image/jpg" href="https://cdn-icons-png.flaticon.com/512/4541/4541014.png">
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
@@ -15,7 +16,10 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/styles.css" />
+    
   </head>
   <body>
     <nav>
@@ -31,19 +35,18 @@
     </nav>
 
     <div class="container">
-      <div id = "title-box">
+      <div id="title-box">
         <h1>Global Fuel Emissions and Air Pollution</h1>
-      <h2>A Deep Dive into Trends and Malaysia's Impact</h2>
+        <h2>A Deep Dive into Trends and Malaysia's Impact</h2>
       </div>
-      
+
       <div id="row1" style="height: 30px"></div>
       <div class="subheading-container">
         <h3>Global Overview</h3>
         <div class="hr"></div>
       </div>
       <div class="row">
-        <div class="chart-container">
-          <div id="deaths_map" class="chart"></div>
+        <div class="chart-container" >
           <div>
             <h4>Global Air Pollution Deaths Over Time</h4>
             <p class="description">
@@ -58,12 +61,13 @@
               <strong style="font-size: 1.1em; color: #c00505d0"
                 >North America</strong
               >
-              experiences lower numbers. Historically, these numbers increased
-              before a global decline leading to 2023. The drop in pollution
+              experiences lower numbers. Historically, global air pollution deaths were extremely high,
+              but experienced a global decline leading to 2023. The drop in pollution
               deaths can be linked to global policies aimed at improving air
               quality and reducing industrial emissions.
             </p>
           </div>
+          <div id="deaths_map" class="chart"></div>
         </div>
       </div>
 
@@ -185,7 +189,7 @@
           <div id="waterfall_chart" class="chart">Time Trends Chart</div>
           <div class="column-container">
             <p class="description">
-              Both globally and in Malaysia, fuel emissions rose steadily until
+              Both globally and in Malaysia, fuel emissions rose until
               the sharp drop in 2020, primarily due to the global slowdown in
               transportation and industrial operations during the
               <strong style="color: #a4603c; font-size: 1.1em">COVID-19</strong>
@@ -205,7 +209,16 @@
 
       <div class="row">
         <div class="chart-container">
-          <div id="stacked_area" class="chart"></div>
+          <div style="align-items: center">
+            <div id="stacked_area" class="chart"></div>
+          
+            <em
+              style="font-size: 0.8em;justify-content: center;  display: flex;"
+              >Use the bottom chart to filter the data based on time!</em
+            >
+            
+          </div>
+
           <div>
             <h4>Malaysia's Fuel Emission Trends by Source</h4>
             <p class="description">
@@ -226,26 +239,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="footer">
-      <p class="p-footer">&copy; 2024 Benjamin Lim Chin Yeong</p>
-      <p class="p-footer">
-        Created for FIT3179 Assignment 2 at Monash University Malaysia
-      </p>
-      <p class="p-footer">Visualizations made with Vega-Lite</p>
-      <p class="p-footer">
-        Data sourced from:
-        <a
-          href="https://github.com/owid/owid-datasets/tree/master/datasets/Air%20pollution%20emissions%20by%20fuel%20(CEDS%2C%202022)"
-          >Global Fuel Emissions</a
-        >
-        &
-        <a
-          href="https://github.com/asnakhader/DVA-Energy/blob/main/death-rates-from-air-pollution.csv"
-          >Global Air Pollution Deaths</a
-        >
-      </p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
