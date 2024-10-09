@@ -1,0 +1,214 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 640,
+  "height": 350,
+  "config": {
+    "text": { "font": "Roboto" },
+    "background": "transparent",
+    "axis": {
+      "labelFont": "Roboto",
+      "titleFont": "Roboto",
+      "labelFontSize": 12,
+      "titleFontSize": 14,
+      "grid": false
+    },
+    "legend": { "labelFont": "Roboto", "titleFont": "Roboto" },
+    "view": { "stroke": null }
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/v9-Global%20Country%20Emissions.csv"
+  },
+  "params": [
+    {
+      "name": "Continent_selection",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "labels": [
+          "Show All",
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "name": "Continent: "
+      }
+    },
+
+    {
+      "name": "select_year_bubble",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2013,
+        "max": 2023,
+        "step": 1,
+        "name": "Year: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum['Year'] == select_year_bubble"
+    },
+    { "filter": "datum['GDP per capita ($)'] > 0" },
+    { "filter": "datum['total_emissions_per_capita'] > 0" },
+    {
+      "filter": "Continent_selection == null || datum.Continent == Continent_selection"
+    },
+    {
+      "calculate": "datum['total_emissions_per_capita'] * datum.Population",
+      "as": "Total emissions"
+    },
+    {
+      "calculate": "(datum['Total emissions'] / 1000)",
+      "as": "Total_emissions_kilotonnes"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "GDP per capita ($)",
+      "type": "quantitative",
+      "axis": { "tickCount": 2, "grid": false },
+      "scale": { "type": "log", "domain": [400, 120000] },
+      "title": "Gross Domestic Product (GDP) per Capita ($)"
+    },
+    "y": {
+      "field": "total_emissions_per_capita",
+      "type": "quantitative",
+      "title": "Total Fuel Emissions per Capita (tonnes/person)",
+      "axis": { "tickCount": 2, "grid": false },
+      "scale": { "type": "log", "domain": [0.005, 1.0] }
+    }
+  },
+  "layer": [
+    {
+      "mark": { "type": "circle", "cursor": "pointer" },
+      "params": [
+        {
+          "name": "highlight",
+          "select": {
+            "type": "point",
+            "on": "mouseover"
+          }
+        }
+      ],
+      "encoding": {
+        "size": {
+          "field": "Population",
+          "type": "quantitative",
+          "scale": {
+            "type": "threshold",
+            "domain": [1000000, 10000000, 50000000, 100000000, 500000000],
+            "range": [10, 50, 150, 200, 300, 700]
+          },
+          "legend": { "format": ".1s" ,"titleFontSize": 11}
+        },
+        "color": {
+          "field": "Continent",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "North America",
+              "South America",
+              "Europe",
+              "Africa",
+              "Asia",
+              "Oceania"
+            ],
+            "range": [
+              "#1f78b4",
+              "#F9BF6E",
+              "#F0E442",
+              "#a6cee3",
+              "#33a02c",
+              "#4392F1"
+            ]
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "highlight",
+            "value": 0.8
+          },
+          "value": 0.2
+        },
+        "tooltip": [
+          { "field": "Entity", "type": "nominal", "title": "Country" },
+          {
+            "field": "GDP per capita ($)",
+            "type": "quantitative",
+            "format": ",.2f"
+          },
+          { "field": "Population", "type": "quantitative", "format": "," },
+          {
+            "field": "total_emissions_per_capita",
+            "type": "quantitative",
+            "format": ".4f",
+            "title": "Total Fuel Emissions per capita (tonnes/person)"
+          },
+          {
+            "field": "Total_emissions_kilotonnes",
+            "type": "quantitative",
+            "format": ",.0f",
+            "title": "Total Fuel Emissions (kilotonnes)"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -12,
+        "fontSize": 11.5,
+        "fontStyle": "italic",
+        "fontWeight": 100,
+        "cursor": "pointer"
+      },
+      "encoding": {
+        "text": { "field": "Entity", "type": "nominal" },
+        "color": { "value": "black" },
+        "opacity": {
+          "condition": {
+            "test": "datum['Entity'] == 'China' || datum['Entity'] == 'Singapore' || datum['Entity'] == 'Malaysia' || datum['Entity'] == 'Qatar' || datum['Entity'] == 'Switzerland' || datum['Entity'] == 'Yemen' ||  datum['Entity'] == 'United States' ||  datum['Entity'] == 'Palau' ||  datum['Entity'] == 'Venezuela' ||  datum['Entity'] == 'United States of America' ||  datum['Entity'] == 'Australia' ||  datum['Entity'] == 'Nigeria'||  datum['Entity'] == 'Greenland'",
+            "value": 1
+          },
+          "value": 0
+        },
+        "tooltip": [
+          { "field": "Entity", "type": "nominal", "title": "Country" },
+          {
+            "field": "GDP per capita ($)",
+            "type": "quantitative",
+            "format": ","
+          },
+          { "field": "Population", "type": "quantitative", "format": "," },
+          {
+            "field": "total_emissions_per_capita",
+            "type": "quantitative",
+            "format": ".4f",
+            "title": "Total Fuel Emissions per capita (tonnes/person)"
+          },
+          {
+            "field": "Total_emissions_kilotonnes",
+            "type": "quantitative",
+            "format": ",.0f",
+            "title": "Total Fuel Emissions (kilotonnes)"
+          }
+        ]
+      }
+    }
+  ]
+}

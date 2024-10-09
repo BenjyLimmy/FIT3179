@@ -1,0 +1,327 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 350,
+
+  "config": {
+    "text": { "font": "Roboto" },
+    "background": "transparent",
+    "axis": {
+      "labelFont": "Roboto",
+      "titleFont": "Roboto",
+      "labelFontSize": 12,
+      "titleFontSize": 14,
+      "grid": false
+    },
+    "legend": { "labelFont": "Roboto", "titleFont": "Roboto" },
+    "view": { "stroke": null }
+  },
+  "params": [
+    {
+      "name": "select_year2",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2013,
+        "max": 2023,
+        "step": 1,
+        "name": "Year: "
+      }
+    },
+
+    {
+      "name": "select_emission",
+      "value": "total_emissions_per_capita",
+      "bind": {
+        "input": "select",
+        "options": [
+          "total_emissions_per_capita",
+          "Total_nox_per_capita",
+          "Total_so2_per_capita",
+          "Total_co_per_capita",
+          "Total_oc_per_capita",
+          "Total_nmvoc_per_capita",
+          "Total_bc_per_capita",
+          "Total_nh3_per_capita"
+        ],
+        "labels": [
+          "Total Emissions",
+          "NOx (Nitrogen Oxides)",
+          "SO2 (Sulfur Dioxide)",
+          "CO (Carbon Monoxide)",
+          "OC (Organic Carbon)",
+          "NMVOC (Non-Methane Volatile Organic Compounds)",
+          "BC (Black Carbon)",
+          "NH3 (Ammonia)"
+        ],
+        "name": "Emission: "
+      }
+    },
+    {
+      "name": "zoom_level2",
+      "value": 133,
+      "bind": {
+        "input": "range",
+        "min": 133,
+        "max": 1000,
+        "step": 1,
+        "name": "Zoom: "
+      }
+    },
+    {
+      "name": "center_to2",
+      "value": [0, 0],
+      "bind": {
+        "input": "select",
+        "options": [
+          [0, 0],
+          [20, 10],
+          [100, 35],
+          [40, 50],
+          [-95, 45],
+          [135, -25],
+          [-60, -15]
+        ],
+        "labels": [
+          "Whole Map",
+          "Africa",
+          "Asia",
+          "Europe",
+          "North America",
+          "Oceania",
+          "South America"
+        ],
+        "name": "Map Centre: "
+      }
+    }
+  ],
+
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/ne_110m.json",
+        "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+      },
+
+      "transform": [
+        {
+          "calculate": "'Data is not available in ' + datum.properties.NAME",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "fill": "lightgray",
+        "stroke": "#909090",
+        "cursor": "pointer"
+      },
+      "encoding": { "tooltip": { "field": "note" } }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/ne_110m_ocean.topojson",
+        "format": { "type": "topojson", "feature": "oceans" }
+      },
+      "mark": { "type": "geoshape", "fill": "skyblue", "stroke": "null" }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/ne_110m_graticules_30.json",
+        "format": { "type": "topojson", "feature": "ne_110m_graticules_30" }
+      },
+      "mark": { "type": "geoshape", "fill": null, "stroke": "lightgrey" }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/v9-Global%20Country%20Emissions.csv"
+      },
+      "mark": { "type": "geoshape", "cursor": "pointer" },
+      "params": [
+        {
+          "name": "highlight",
+          "select": {
+            "type": "point",
+            "on": "mouseover"
+          }
+        }
+      ],
+      "transform": [
+        {
+          "lookup": "Entity",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/ne_110m.json",
+              "format": {
+                "type": "topojson",
+                "feature": "ne_110m_admin_0_countries"
+              }
+            },
+            "key": "properties.NAME"
+          },
+          "as": "geo"
+        },
+        {
+          "filter": "datum['Year'] == select_year2"
+        },
+        {
+          "calculate": "datum[select_emission] ? datum[select_emission] : null",
+          "as": "selected_emission"
+        }
+      ],
+      "encoding": {
+        "shape": { "field": "geo", "type": "geojson" },
+        "color": {
+          "field": "selected_emission",
+          "type": "quantitative",
+          "scale": {
+            "type": "quantize",
+
+            "scheme": "browns",
+            "nice": true,
+            "round": true,
+            "zero": true
+          },
+          "legend": {
+            "orient": "top",
+            "titleFontSize": 11,
+            "title": "Emissions per Capita (tonnes/person)",
+            "titleLimit": 300
+          }
+        },
+        "tooltip": [
+          { "field": "Entity", "type": "nominal", "title": "Country" },
+          { "field": "Continent" },
+          {
+            "field": "selected_emission",
+            "type": "nominal",
+            "title": "Emissions per Capita (tonnes/person)",
+            "format": ".4f"
+          },
+
+          { "field": "Year", "type": "quantitative" }
+        ],
+        "opacity": {
+          "condition": {
+            "param": "highlight",
+            "value": 1
+          },
+          "value": 0.5
+        },
+        "stroke": {
+          "condition": {
+            "param": "highlight",
+            "empty": false,
+            "value": "black"
+          },
+          "value": "black"
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "highlight",
+            "empty": false,
+            "value": 0.5
+          },
+          "value": 0.3
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/continents.csv"
+      },
+      "mark": {
+        "type": "text",
+        "color": "black",
+        "fontWeight": "bolder",
+        "fontSize": 11
+      },
+      "encoding": {
+        "text": { "field": "Continent", "type": "nominal" },
+        "latitude": { "field": "Latitude", "type": "quantitative" },
+        "longitude": { "field": "Longitude", "type": "quantitative" }
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/emissionmap_annotation2.csv"
+      },
+      "encoding": {
+        "longitude": { "field": "Longitude", "type": "quantitative" },
+        "latitude": { "field": "Latitude", "type": "quantitative" }
+      },
+
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "size": 600,
+            "shape": "arrow",
+            "color": "#033e6f",
+            "strokeWidth": 2,
+            "fill": "#2b0360",
+            "dx": -10
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "fontStyle": "italic",
+            "fontWeight": "bold",
+            "fontSize": 10,
+            "color": "#040404",
+            "dy": 30,
+            "dx": -50,
+            "lineBreak": "\\",
+            "lineHeight": 10
+          },
+          "encoding": { "text": { "field": "text" } }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/emissionmap_annotation1.csv"
+      },
+      "encoding": {
+        "longitude": { "field": "Longitude", "type": "quantitative" },
+        "latitude": { "field": "Latitude", "type": "quantitative" }
+      },
+
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "size": 600,
+            "shape": "arrow",
+            "color": "#033e6f",
+            "strokeWidth": 2,
+            "fill": "#2b0360",
+            "dx": -10,
+            "angle": 45
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "fontStyle": "italic",
+            "fontWeight": "bold",
+            "fontSize": 10,
+            "color": "#040404",
+            "dy": 30,
+            "dx": -130,
+            "lineBreak": "\\",
+            "lineHeight": 10
+          },
+          "encoding": { "text": { "field": "text" } }
+        }
+      ]
+    }
+  ],
+  "projection": {
+    "type": "equalEarth",
+    "center": { "expr": "center_to2" },
+    "scale": { "expr": "zoom_level2" }
+  }
+}

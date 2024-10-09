@@ -1,0 +1,162 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": { "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/filtered_malaysia_emissions_2023.csv" },
+  "config": {
+    "text": { "font": "Roboto" },
+    "background": "transparent",
+    "view": {
+      "stroke": "transparent"
+    },
+    "axis": {
+      "labelFont": "Roboto",
+      "titleFont": "Roboto",
+      "labelFontSize": 12,
+      "titleFontSize": 14,
+      "grid": false
+    },
+    "legend": {
+      "labelFont": "Roboto",
+      "titleFont": "Roboto",
+      "titleColor": "black",
+      "labelColor": "black",
+      "titleFontSize": 12,
+      "labelFontSize": 11,
+
+      "columns": 2
+    }
+  },
+
+  "padding": {
+    "left": 100
+  },
+
+  "width": 375,
+  "height": 397,
+  "center": true,
+
+  "params": [
+    {
+      "name": "hover",
+      "select": {
+        "type": "point",
+        "on": "mouseover"
+      }
+    }
+  ],
+  "transform": [
+    {
+      "joinaggregate": [
+        { "op": "sum", "field": "Emissions_Value", "as": "TotalOrigin" }
+      ]
+    },
+    {
+      "joinaggregate": [
+        { "op": "sum", "field": "Emissions_Value", "as": "TotalOriginGrouped" }
+      ],
+      "groupby": ["Emissions_Type"]
+    },
+    {
+      "calculate": "round(datum.TotalOriginGrouped/datum.TotalOrigin * 100)",
+      "as": "PercentOfTotal"
+    },
+    {
+      "aggregate": [{ "op": "min", "field": "PercentOfTotal", "as": "P" }],
+      "groupby": ["Emissions_Type"]
+    },
+    { "calculate": "sequence(1,datum.P+1)", "as": "S" },
+    { "flatten": ["S"] },
+    {
+      "window": [{ "op": "row_number", "as": "id" }],
+      "sort": [{ "field": "Origin", "order": "descending" }]
+    },
+    { "calculate": "ceil (datum.id / 10)", "as": "row" },
+    { "calculate": "datum.id - datum.row * 10", "as": "col" }
+  ],
+  "mark": {
+    "type": "square",
+    "filled": true,
+    "tooltip": true,
+    "stroke": "black",
+    "strokeWidth": 0.7,
+    "cursor": "pointer"
+  },
+
+  "encoding": {
+    "x": { "field": "col", "type": "ordinal", "axis": null },
+    "y": { "field": "row", "type": "ordinal", "axis": null, "sort": "-y" },
+    "color": {
+      "field": "Emissions_Type",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "NOx (Nitrogen Oxides)",
+          "SO2 (Sulfur Dioxide)",
+          "CO (Carbon Monoxide)",
+          "OC (Organic Carbon)",
+          "NMVOC (Non-Methane Volatile Organic Compounds)",
+          "NH3 (Ammonia)"
+        ],
+        "range": [
+          "#e32300",
+          "#f57600",
+          "#0073e6",
+          "#e6308a",
+          "#c44601",
+          "#8babf1"
+        ]
+      },
+      "legend": {
+        "orient": "bottom",
+        "offset": 10,
+        "labelOffset": 4,
+        "titlePadding": 5,
+        "titleFontSize": 15,
+        "labelLimit": 0,
+        "title": "Type of Emissions"
+      }
+    },
+    "stroke": {
+      "condition": [
+        {
+          "param": "hover",
+          "empty": false,
+          "value": "white"
+        }
+      ],
+      "value": "white"
+    },
+    "strokeWidth": {
+      "condition": [
+        {
+          "param": "hover",
+          "empty": false,
+          "value": 2
+        }
+      ],
+      "value": 0.35
+    },
+    "opacity": {
+      "condition": [
+        {
+          "param": "hover",
+          "value": 1
+        }
+      ],
+      "value": 0.5
+    },
+
+    "size": { "value": 550 },
+    "tooltip": [
+      {
+        "field": "Emissions_Type",
+        "type": "nominal",
+        "title": "Emission Type"
+      },
+      {
+        "field": "P",
+        "type": "quantitative",
+        "title": "Total Emissions Proportion (%)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/filtered_malaysia_sources.csv"
+  },
+  "config": {
+    "text": { "font": "Roboto" },
+    "background": "transparent",
+    "axis": {
+      "labelFont": "Roboto",
+      "titleFont": "Roboto",
+      "labelFontSize": 12,
+      "titleFontSize": 14,
+      "grid": false
+    },
+    "legend": { "labelFont": "Roboto", "titleFont": "Roboto" },
+    "view": { "stroke": null }
+  },
+  "vconcat": [
+    {
+      "width": 650,
+      "height": 450,
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "point": true,
+            "interpolate": "monotone",
+            "cursor": "pointer"
+          },
+          "params": [
+            {
+              "name": "highlight_area",
+              "select": {
+                "type": "point",
+                "on": "mouseover"
+              }
+            }
+          ],
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "temporal",
+              "axis": { "title": "Year" },
+              "scale": { "domain": { "param": "brush" } }
+            },
+            "y": {
+              "field": "Total Emissions",
+              "type": "quantitative",
+              "axis": { "title": "Gross Emissions (tonnes)" },
+              "sort": [
+                "Biomass",
+                "Diesel Oil",
+                "Hard Coal",
+                "Light Oil",
+                "Process"
+              ]
+            },
+            "color": {
+              "field": "Emission Source",
+              "type": "nominal",
+              "legend": { "title": "Fuel Source" },
+              "scale": {
+                "range": ["#ffff99", "#56B4E9", "#009E73", "#E69F00", "#0072B2"]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "Emission Source",
+                "type": "nominal",
+                "title": "Emission Source"
+              },
+              {
+                "field": "Year",
+                "type": "temporal",
+                "title": "Year",
+                "timeUnit": "year"
+              },
+              {
+                "field": "Total Emissions",
+                "type": "quantitative",
+                "title": "Emissions (tonnes)",
+                "format": ",.0f"
+              }
+            ],
+            "opacity": {
+              "condition": {
+                "param": "highlight_area",
+                "value": 0.8
+              },
+              "value": 0.2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 650,
+      "height": 60,
+      "mark": "bar",
+      "params": [
+        {
+          "name": "brush",
+          "select": { "type": "interval", "encodings": ["x"] }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "axis": { "tickCount": 10 },
+          "scale": { "domain": [{ "year": 1994 }, { "year": 2023 }] }
+        },
+        "y": {
+          "field": "Total Emissions",
+          "type": "quantitative",
+          "axis": { "tickCount": 3, "grid": false }
+        },
+
+        "color": {
+          "field": "Emission Source",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

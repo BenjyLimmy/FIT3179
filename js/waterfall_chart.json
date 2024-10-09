@@ -1,0 +1,409 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "config": {
+    "background": "transparent",
+    "view": {
+      "stroke": "transparent"
+    },
+    "text": { "fontWeight": "bold", "color": "#404040", "font": "Roboto" },
+    "axis": {
+      "labelFont": "Roboto",
+      "titleFont": "Roboto",
+      "labelFontSize": 9,
+      "titleFontSize": 12,
+      "grid": false
+    },
+    "legend": { "labelFont": "Roboto", "titleFont": "Roboto" }
+  },
+
+  "hconcat": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/global_waterfall.csv"
+      },
+      "title": "Changes in Global Fuel Emissions (2013-2023)",
+
+      "width": 530,
+      "height": 450,
+      "transform": [
+        { "window": [{ "op": "sum", "field": "amount", "as": "sum" }] },
+        { "window": [{ "op": "lead", "field": "label", "as": "lead" }] },
+        {
+          "calculate": "datum.lead === null ? datum.label : datum.lead",
+          "as": "lead"
+        },
+        {
+          "calculate": "(datum.label === 'Begin' || datum.label === 'End') ? 900000 : datum.sum - datum.amount",
+          "as": "previous_sum"
+        },
+        {
+          "calculate": "datum.label === 'End' ? datum.sum : datum.amount",
+          "as": "amount"
+        },
+        {
+          "calculate": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
+          "as": "text_amount"
+        },
+        { "calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center" },
+        {
+          "calculate": "datum.label === 'Begin' ? 'Begin (2013)' : datum.label === 'End' ? 'End (2023)' : datum.label",
+          "as": "tooltip_label"
+        },
+        {
+          "calculate": "datum.label === 'Begin' ? null : datum.label === 'End' ? null : datum.amount",
+          "as": "tooltip_amt"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "label",
+          "type": "ordinal",
+          "sort": null,
+          "axis": { "labelAngle": 0, "title": "Year" }
+        }
+      },
+      "layer": [
+        {
+          "mark": { "type": "bar", "size": 45, "cursor": "pointer" },
+          "encoding": {
+            "y": {
+              "field": "previous_sum",
+              "type": "quantitative",
+              "title": "Total Fuel Emissions (kilotonnes)",
+              "axis": { "tickCount": 5 },
+              "scale": { "domain": [900000, 1020000] }
+            },
+            "y2": { "field": "sum" },
+            "color": {
+              "condition": [
+                {
+                  "test": "datum.label === 'Begin' || datum.label === 'End'",
+                  "value": "#f7e0b6"
+                },
+                { "test": "datum.sum < datum.previous_sum", "value": "#f57600" }
+              ],
+              "value": "#93c4aa"
+            },
+            "tooltip": [
+              { "field": "tooltip_label", "type": "nominal", "title": "Year" },
+              {
+                "field": "sum",
+                "type": "quantitative",
+                "title": "Total Fuel Emissions (kilotonnes)",
+                "format": ","
+              },
+              {
+                "field": "tooltip_amt",
+                "type": "quantitative",
+                "title": "Increase / Decrease in Emissions (kilotonnes)",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "rule",
+            "color": "#404040",
+            "opacity": 1,
+            "strokeWidth": 2,
+            "xOffset": -22.5,
+            "x2Offset": 22.5
+          },
+          "encoding": {
+            "x2": { "field": "lead" },
+            "y": { "field": "sum", "type": "quantitative" }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": { "expr": "datum.amount >= 0 ? -4 : 4" },
+            "baseline": { "expr": "datum.amount >= 0 ? 'bottom' : 'top'" }
+          },
+          "encoding": {
+            "y": { "field": "sum", "type": "quantitative" },
+            "text": { "field": "sum", "type": "nominal" },
+            "tooltip": [
+              { "field": "tooltip_label", "type": "nominal", "title": "Year" },
+              {
+                "field": "sum",
+                "type": "quantitative",
+                "title": "Total Fuel Emissions (kilotonnes)",
+                "format": ","
+              },
+              {
+                "field": "tooltip_amt",
+                "type": "quantitative",
+                "title": "Increase / Decrease in Emissions (kilotonnes)",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontWeight": "bold",
+            "baseline": "middle"
+          },
+          "encoding": {
+            "y": { "field": "center", "type": "quantitative" },
+            "text": { "field": "text_amount", "type": "nominal" },
+            "color": {
+              "condition": [
+                {
+                  "test": "datum.label === 'Begin' || datum.label === 'End'",
+                  "value": "#725a30"
+                }
+              ],
+              "value": "white"
+            },
+            "tooltip": [
+              { "field": "tooltip_label", "type": "nominal", "title": "Year" },
+              {
+                "field": "sum",
+                "type": "quantitative",
+                "title": "Total Fuel Emissions (kilotonnes)",
+                "format": ","
+              },
+              {
+                "field": "tooltip_amt",
+                "type": "quantitative",
+                "title": "Increase / Decrease in Emissions (kilotonnes)",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/waterfall_annotations.csv"
+          },
+          "mark": {
+            "type": "text",
+            "lineBreak": "\\",
+            "align": "center",
+            "dy": -260,
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "lineHeight": 7
+          },
+          "encoding": {
+            "x": {
+              "field": "year",
+              "type": "nominal"
+            },
+            "text": {
+              "field": "text",
+              "type": "nominal"
+            }
+          }
+        },
+        {
+          "mark": { "type": "rule", "color": "black", "strokeDash": [1, 2] },
+          "encoding": {
+            "x": {
+              "datum": "2020"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/msia_waterfall.csv"
+      },
+      "title": "Changes in Malaysia's Fuel Emissions (2013-2023)",
+
+      "width": 530,
+      "height": 450,
+      "transform": [
+        { "window": [{ "op": "sum", "field": "amount", "as": "sum" }] },
+        { "window": [{ "op": "lead", "field": "label", "as": "lead" }] },
+        {
+          "calculate": "datum.lead === null ? datum.label : datum.lead",
+          "as": "lead"
+        },
+        {
+          "calculate": "(datum.label === 'Begin' || datum.label === 'End') ? 5000 : datum.sum - datum.amount",
+          "as": "previous_sum"
+        },
+        {
+          "calculate": "datum.label === 'End' ? datum.sum : datum.amount",
+          "as": "amount"
+        },
+        {
+          "calculate": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
+          "as": "text_amount"
+        },
+        { "calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center" },
+        {
+          "calculate": "datum.label === 'Begin' ? 'Begin (2013)' : datum.label === 'End' ? 'End (2023)' : datum.label",
+          "as": "tooltip_label"
+        },
+        {
+          "calculate": "datum.label === 'Begin' ? null : datum.label === 'End' ? null : datum.amount",
+          "as": "tooltip_amt"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "label",
+          "type": "ordinal",
+          "sort": null,
+          "axis": { "labelAngle": 0, "title": "Year" }
+        }
+      },
+      "layer": [
+        {
+          "mark": { "type": "bar", "size": 45, "cursor": "pointer" },
+          "encoding": {
+            "y": {
+              "field": "previous_sum",
+              "type": "quantitative",
+              "title": "Total Fuel Emissions (kilotonnes)",
+              "axis": { "tickCount": 5 },
+              "scale": { "domain": [5000, 7650] }
+            },
+            "y2": { "field": "sum" },
+            "color": {
+              "condition": [
+                {
+                  "test": "datum.label === 'Begin' || datum.label === 'End'",
+                  "value": "#f7e0b6"
+                },
+                { "test": "datum.sum < datum.previous_sum", "value": "#f57600" }
+              ],
+              "value": "#93c4aa"
+            },
+            "tooltip": [
+              { "field": "tooltip_label", "type": "nominal", "title": "Year" },
+              {
+                "field": "sum",
+                "type": "quantitative",
+                "title": "Total Fuel Emissions (kilotonnes)",
+                "format": ","
+              },
+              {
+                "field": "tooltip_amt",
+                "type": "quantitative",
+                "title": "Increase / Decrease in Emissions (kilotonnes)",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "rule",
+            "color": "#404040",
+            "opacity": 1,
+            "strokeWidth": 2,
+            "xOffset": -22.5,
+            "x2Offset": 22.5
+          },
+          "encoding": {
+            "x2": { "field": "lead" },
+            "y": { "field": "sum", "type": "quantitative" }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": { "expr": "datum.amount >= 0 ? -4 : 4" },
+            "baseline": { "expr": "datum.amount >= 0 ? 'bottom' : 'top'" }
+          },
+          "encoding": {
+            "y": { "field": "sum", "type": "quantitative" },
+            "text": { "field": "sum", "type": "nominal" },
+            "tooltip": [
+              { "field": "tooltip_label", "type": "nominal", "title": "Year" },
+              {
+                "field": "sum",
+                "type": "quantitative",
+                "title": "Total Fuel Emissions (kilotonnes)",
+                "format": ","
+              },
+              {
+                "field": "tooltip_amt",
+                "type": "quantitative",
+                "title": "Increase / Decrease in Emissions (kilotonnes)",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontWeight": "bold",
+            "baseline": "middle"
+          },
+          "encoding": {
+            "y": { "field": "center", "type": "quantitative" },
+            "text": { "field": "text_amount", "type": "nominal" },
+            "color": {
+              "condition": [
+                {
+                  "test": "datum.label === 'Begin' || datum.label === 'End'",
+                  "value": "#725a30"
+                }
+              ],
+              "value": "white"
+            },
+            "tooltip": [
+              { "field": "tooltip_label", "type": "nominal", "title": "Year" },
+              {
+                "field": "sum",
+                "type": "quantitative",
+                "title": "Total Fuel Emissions (kilotonnes)",
+                "format": ","
+              },
+              {
+                "field": "tooltip_amt",
+                "type": "quantitative",
+                "title": "Increase / Decrease in Emissions (kilotonnes)",
+                "format": ","
+              }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/waterfall_annotations.csv"
+          },
+          "mark": {
+            "type": "text",
+            "lineBreak": "\\",
+            "align": "center",
+            "dy": -260,
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "lineHeight": 7
+          },
+          "encoding": {
+            "x": {
+              "field": "year",
+              "type": "nominal"
+            },
+            "text": {
+              "field": "text",
+              "type": "nominal"
+            }
+          }
+        },
+        {
+          "mark": { "type": "rule", "color": "black", "strokeDash": [1, 2] },
+          "encoding": {
+            "x": {
+              "datum": "2020"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
