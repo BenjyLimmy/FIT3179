@@ -23,7 +23,7 @@
       "layer": [
         {
           "mark": {
-            "type": "bar",
+            "type": "area",
             "point": true,
             "interpolate": "monotone",
             "cursor": "pointer"
@@ -91,13 +91,78 @@
               "value": 0.2
             }
           }
+        },
+        {
+          "mark": { "type": "rule", "color": "black", "strokeDash": [7, 5] },
+          "encoding": {
+            "x": {
+              "datum": { "year": 2003 },
+              "type": "temporal"
+            },
+            "y": {
+              "datum": 7250000,
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "mark": { "type": "rule", "color": "black", "strokeDash": [7, 5] },
+          "encoding": {
+            "x": {
+              "datum": { "year": 2015 },
+              "type": "temporal"
+            },
+            "y": {
+              "datum": 7250000,
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "mark": { "type": "rule", "color": "black", "strokeDash": [7, 5] },
+          "encoding": {
+            "x": {
+              "datum": { "year": 2020 },
+              "type": "temporal"
+            },
+            "y": {
+              "datum": 7250000,
+              "type": "quantitative"
+            }
+          }
+        },
+
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/stacked_annotations.csv"
+          },
+          "mark": {
+            "type": "text",
+            "lineBreak": "\\",
+            "align": "center",
+            "dy": -220,
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "lineHeight": 10
+          },
+          "encoding": {
+            "x": {
+              "field": "year",
+              "type": "temporal",
+              "scale": { "domain": { "param": "brush" } }
+            },
+            "text": {
+              "field": "text",
+              "type": "nominal"
+            }
+          }
         }
       ]
     },
     {
       "width": 650,
       "height": 60,
-      "mark": "bar",
+      "mark": "area",
       "params": [
         {
           "name": "brush",
