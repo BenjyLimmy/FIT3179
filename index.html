@@ -16,13 +16,22 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="css/styles.css" />
     
   </head>
   <body>
-    
+    <nav>
+      <ul>
+        <li><a href="#row1">Global Overview</a></li>
+        <li class="nav-separator"></li>
+        <li><a href="#row2">Economic Factors</a></li>
+        <li class="nav-separator"></li>
+        <li><a href="#row3">Emissions Breakdown</a></li>
+        <li class="nav-separator" style="width: 2.5px"></li>
+        <li><a href="#row4">Trends & Future Projections</a></li>
+      </ul>
+    </nav>
+
     <div class="container">
       <div id="title-box">
         <h1>Global Fuel Emissions and Air Pollution</h1>
@@ -228,6 +237,26 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="footer">
+      <p class="p-footer">&copy; 2024 Benjamin Lim Chin Yeong</p>
+      <p class="p-footer">
+        Created for FIT3179 Assignment 2 at Monash University Malaysia
+      </p>
+      <p class="p-footer">Visualizations made with Vega-Lite</p>
+      <p class="p-footer">
+        Data sourced from:
+        <a
+          href="https://github.com/owid/owid-datasets/tree/master/datasets/Air%20pollution%20emissions%20by%20fuel%20(CEDS%2C%202022)"
+          >Global Fuel Emissions</a
+        >
+        &
+        <a
+          href="https://github.com/asnakhader/DVA-Energy/blob/main/death-rates-from-air-pollution.csv"
+          >Global Air Pollution Deaths</a
+        >
+      </p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
