@@ -4,17 +4,19 @@
     "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/filtered_malaysia_sources.csv"
   },
   "config": {
-    "text": { "font": "Roboto" },
     "background": "transparent",
+    "view": {
+      "stroke": "transparent"
+    },
+    "text": { "fontWeight": "bold", "color": "#404040", "font": "Roboto" },
     "axis": {
       "labelFont": "Roboto",
       "titleFont": "Roboto",
-      "labelFontSize": 12,
-      "titleFontSize": 14,
+      "labelFontSize": 9,
+      "titleFontSize": 12,
       "grid": false
     },
-    "legend": { "labelFont": "Roboto", "titleFont": "Roboto" },
-    "view": { "stroke": null }
+    "legend": { "labelFont": "Roboto", "titleFont": "Roboto" }
   },
   "vconcat": [
     {
@@ -47,7 +49,7 @@
             "y": {
               "field": "Total Emissions",
               "type": "quantitative",
-              "axis": { "title": "Gross Emissions (tonnes)" },
+              "axis": { "title": "Total Emissions (tonnes)" ,"tickCount": 8},
               "sort": [
                 "Biomass",
                 "Diesel Oil",
@@ -61,8 +63,9 @@
               "type": "nominal",
               "legend": { "title": "Fuel Source" },
               "scale": {
-                "range": ["#ffff99", "#56B4E9", "#009E73", "#E69F00", "#0072B2"]
+                "range": ["#ffff7a", "#56B4E9", "#009E73", "#E69F00", "#0072B2"]
               }
+              
             },
             "tooltip": [
               {
@@ -162,7 +165,7 @@
     {
       "width": 650,
       "height": 60,
-      "mark": "area",
+      "mark": "line",
       "params": [
         {
           "name": "brush",
