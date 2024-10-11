@@ -243,7 +243,7 @@
     },
     {
       "data": {
-        "url": "https://raw.githubusercontent.com/BenjyLimmy/FIT3179/refs/heads/main/data/emissionmap_annotation2.csv"
+        "url": "data/emissionmap_annotation2.csv"
       },
       "encoding": {
         "longitude": { "field": "Longitude", "type": "quantitative" },
@@ -268,10 +268,10 @@
             "align": "left",
             "fontStyle": "italic",
             "fontWeight": "bold",
-            "fontSize": 10,
+            "fontSize": 12,
             "color": "#040404",
             "dy": 30,
-            "dx": -50,
+            "dx": -45,
             "lineBreak": "\\",
             "lineHeight": 10
           },
@@ -307,7 +307,7 @@
             "align": "left",
             "fontStyle": "italic",
             "fontWeight": "bold",
-            "fontSize": 10,
+            "fontSize": 12,
             "color": "#040404",
             "dy": 30,
             "dx": -130,

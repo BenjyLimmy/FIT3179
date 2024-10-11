@@ -224,7 +224,7 @@
             "color": "#033e6f",
             "strokeWidth": 2,
             "fill": "#2b0360",
-            "dx": -10
+            "dx": 10
           }
         },
         {
@@ -233,12 +233,12 @@
             "align": "left",
             "fontStyle": "italic",
             "fontWeight": "bold",
-            "fontSize": 10,
+            "fontSize": 12,
             "color": "#040404",
-            "dy": 20,
-            "dx": -100,
+            "dy": 25,
+            "dx": -80,
             "lineBreak": "\\",
-            "lineHeight": 10
+            "lineHeight": 7
           },
           "encoding": { "text": { "field": "text" } }
         }
