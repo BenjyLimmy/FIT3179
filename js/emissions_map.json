@@ -146,6 +146,7 @@
         }
       ],
       "transform": [
+        
         {
           "lookup": "Entity",
           "from": {
@@ -160,11 +161,9 @@
           },
           "as": "geo"
         },
+        { "filter": "datum['Year'] == select_year2" },
         {
-          "filter": "datum['Year'] == select_year2"
-        },
-        {
-          "calculate": "datum[select_emission] ? datum[select_emission] : null",
+          "calculate": "datum[select_emission] || null",
           "as": "selected_emission"
         }
       ],
